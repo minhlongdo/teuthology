@@ -44,7 +44,9 @@ class Task(object):
         all_overrides = self.ctx.config.get('overrides', dict())
         if not all_overrides:
             return
-        task_overrides = all_overrides.get(self.name)
+        task_name = self.name
+        task_name = task_name.replace('_', '-')
+        task_overrides = all_overrides.get(task_name)
         if task_overrides:
             self.log.debug(
                 "Applying overrides for task {name}: {overrides}".format(
