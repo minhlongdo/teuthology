@@ -125,7 +125,7 @@ class CephAnsible(Task):
                                                'ceph-ansible.git')
 
         # for downstream bulids skip var setup
-        if 'rhbulid' in config:
+        if 'rhbuild' in config:
             return
         # default vars to dev builds
         if 'vars' not in config:
