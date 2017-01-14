@@ -215,7 +215,7 @@ class CephAnsible(Task):
         os.remove(self.inventory)
         os.remove(self.playbook_file)
         os.remove(self.extra_vars_file)
-        machine_type = self.ctx.config('machine_type')
+        machine_type = self.ctx.config.get('machine_type')
         if not machine_type == 'vps':
             self.ctx.cluster.run(args=['sudo', 'systemctl', 'stop',
                                        'ceph.target'],
@@ -299,6 +299,15 @@ class CephAnsible(Task):
     def run_rh_playbook(self):
         ceph_installer = self.ceph_installer
         args = self.args
+        # install ceph-ansible
+        if ceph_installer.os.package_type == 'rpm':
+            ceph_installer.run(args=[
+                'sudo',
+                'yum',
+                'install',
+                '-y',
+                'ceph-ansible'])
+            time.sleep(4)
         ceph_installer.run(args=[
             'cp',
             '-R',
