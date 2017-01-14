@@ -233,7 +233,8 @@ def get_initial_tasks(lock, config, machine_type):
         init_tasks.extend([
             {'internal.redhat.setup_cdn_repo': None},
             {'internal.redhat.setup_base_repo': None},
-            {'internal.redhat.setup_additional_repo': None}
+            {'internal.redhat.setup_additional_repo': None},
+            {'kernel.install_latest_rh_kernel': None}
         ])
 
     if 'roles' in config:
