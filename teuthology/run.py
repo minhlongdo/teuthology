@@ -237,6 +237,9 @@ def get_initial_tasks(lock, config, machine_type):
             {'kernel.install_latest_rh_kernel': None}
         ])
 
+    if 'test-mode' in config:
+        return init_tasks
+
     if 'roles' in config:
         init_tasks.extend([
             {'pcp': None},
