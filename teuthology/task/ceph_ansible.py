@@ -375,7 +375,7 @@ class CephAnsible(Task):
             raise CephAnsibleError("Failed during ceph-ansible execution")
         # old ansible doesn't have clients role, setup clients for those
         # cases
-        if self.config.get('setup-client'):
+        if self.config.get('setup-clients'):
             self.setup_client_node()
         self.wait_for_ceph_health()
 
