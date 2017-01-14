@@ -53,6 +53,33 @@ class CephAnsible(Task):
             roles=['ceph-restapi'],
         ),
     ]
+    _default_rh_playbook = [
+        dict(
+            hosts='mons',
+            become=True,
+            roles=['ceph-mon'],
+        ),
+        dict(
+            hosts='osds',
+            become=True,
+            roles=['ceph-osd'],
+        ),
+        dict(
+            hosts='mdss',
+            become=True,
+            roles=['ceph-mds'],
+        ),
+        dict(
+            hosts='rgws',
+            become=True,
+            roles=['ceph-rgw'],
+        ),
+        dict(
+            hosts='client',
+            become=True,
+            roles=['ceph-common'],
+        ),
+    ]
 
     __doc__ = """
     A task to setup ceph cluster using ceph-ansible
@@ -90,9 +117,16 @@ class CephAnsible(Task):
             self.playbook = self._default_playbook
         else:
             self.playbook = self.config['playbook']
+        if 'setup-clients' in config:
+            # use playbook that doesn't support ceph-client roles
+            self.playbook = self._default_rh_playbook
         if 'repo' not in config:
             self.config['repo'] = os.path.join(teuth_config.ceph_git_base_url,
                                                'ceph-ansible.git')
+
+        # for downstream bulids skip var setup
+        if 'rhbulid' in config:
+            return
         # default vars to dev builds
         if 'vars' not in config:
             vars = dict()
