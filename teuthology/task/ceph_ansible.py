@@ -257,7 +257,7 @@ class CephAnsible(Task):
             time.sleep(4)
             self.ctx.cluster.run(args=['sudo', 'stop', 'ceph-all'],
                                  check_status=False)
-            installer_node = self.installer_node
+            installer_node = self.ceph_installer
             installer_node.run(args=['rm', '-rf', 'ceph-ansible'])
             remove_osd_mounts(self.ctx)
             remove_ceph_packages(self.ctx)
